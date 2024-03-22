@@ -1,9 +1,16 @@
 import './styles/index.css'; // добавьте импорт главного файла стилей
-import createCards from './components/createCards';
-import {open, close} from './components/modal';
+import initialCards from './components/cards';
+import {createCard, deleteCard, likeCard} from './components/card';
+import {openModal, closeModal} from './components/modal';
 
-createCards()
 
+// @todo: DOM узел для вставки карточек 
+const cardsContainer = document.querySelector('.places__list');
+
+initialCards.forEach((item) => {
+  const card = createCard(item, deleteCard, likeCard);
+  cardsContainer.append(card);
+});
 
 // открытие и закрытие мадального окна
 
@@ -13,41 +20,21 @@ const triggerOpenModalAddCard = document.querySelector('.profile__add-button');
 const modalEditProfile = document.querySelector('.popup_type_edit');
 const modalAddCard = document.querySelector('.popup_type_new-card');
 
-const closeModalProfile = modalEditProfile.querySelector('.popup__close');
-const closeModalCard = modalAddCard.querySelector('.popup__close');
+const buttonCloseList = document.querySelectorAll('.popup__close');
 
-
-triggerOpenModalEditProfile.addEventListener('click', () => {
-  open(modalEditProfile);
-});
+buttonCloseList.forEach(btn => {
+  const popup = btn.closest('.popup');
+  btn.addEventListener('click', () => closeModal(popup)); 
+  popup.addEventListener('mousedown', (evt) => {
+    if  (evt.target.classList.contains('popup')) {
+      closeModal(popup);
+    }
+  });
+})
 
 triggerOpenModalAddCard.addEventListener('click', () => {
-  open(modalAddCard);
+  openModal(modalAddCard);
 });
-
-closeModalProfile.addEventListener('click', () => {
-  close(modalEditProfile, formProfile);
-});
-
-closeModalCard.addEventListener('click', () => {
-  close(modalAddCard, formCard);
-});
-
-
-// закрытие на оверлей
-modalEditProfile.addEventListener('click', (evt) => {
-   if (evt.target.classList.contains('popup_type_edit')) {
-    close(modalEditProfile, formProfile);
-  }
-});
-
-modalAddCard.addEventListener('click', (evt) => {
-   if (evt.target.classList.contains('popup_type_new-card')) {
-    close(modalAddCard, formCard);
-  }
-});
-
-
 
 // вывод текста в поля инпута
 
@@ -59,22 +46,21 @@ const formProfile = document.forms['edit-profile'];
 const nameInput = formProfile.elements.name;
 const jobInput  = formProfile.elements.description;
 
-nameInput.value = profilTitle.textContent;
-jobInput.value = profilDescr.textContent;
+
+triggerOpenModalEditProfile.addEventListener('click', () => {
+  nameInput.value = profilTitle.textContent;
+  jobInput.value = profilDescr.textContent;
+  openModal(modalEditProfile);
+});
 
 
 function handleFormSubmit(evt) {
   evt.preventDefault();
-  // Получите значение полей jobInput и nameInput из свойства value
-  const name = nameInput.value;
-  const job = jobInput.value;
-  // Выберите элементы, куда должны быть вставлены значения полей
-  profilTitle.textContent = name;
-  profilDescr.textContent = job;
 
+  profilTitle.textContent = nameInput.value;
+  profilDescr.textContent = jobInput.value;
 
-  close(modalEditProfile, formProfile);
-
+  closeModal(modalEditProfile);
 }
 
 formProfile.addEventListener('submit', handleFormSubmit); 
@@ -90,20 +76,20 @@ function handleFormSubmitCard(evt) {
   const placeInput = formCard.elements.placeName.value;
   const linkInput  = formCard.elements.link.value;
 
-  createCards({ name: placeInput, link: linkInput });
+  const card = createCard({ name: placeInput, link: linkInput }, deleteCard, likeCard);
+  cardsContainer.prepend(card);
 
-  close(modalAddCard, formCard);
+  formCard.reset();
+
+  closeModal(modalAddCard);
 
 }
 
 formCard.addEventListener('submit', handleFormSubmitCard);
 
-
 // открытие и закрытие img карточки
 
-
 const cardImage = document.querySelector('.popup_type_image');
-const cardImageClose = cardImage.querySelector('.popup__close');
 
 const triggerOpenImage = document.querySelector('.places__list');
 
@@ -111,20 +97,11 @@ const popupImage = cardImage.querySelector('.popup__image');
 const popupDescr = cardImage.querySelector('.popup__caption');
 
 triggerOpenImage.addEventListener('click', (evt) => {
+  //поставлено ограничение на клик по определенной области
   if (evt.target.classList.contains('card__image')) {
     popupImage.src = evt.target.src;
     popupImage.alt = evt.target.alt;
     popupDescr.textContent = evt.target.alt;
-    open(cardImage);
-  }
-});
-
-cardImageClose.addEventListener('click', () => {
-  close(cardImage);
-});
-
-cardImage.addEventListener('click', (evt) => {
-   if (evt.target.classList.contains('popup_type_image')) {
-    close(cardImage);
+    openModal(cardImage);
   }
 });

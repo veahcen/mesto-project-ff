@@ -1,24 +1,19 @@
-function closeModalOnEscape (evt) {
+function closeByEsc (evt) {
   if (evt.key === 'Escape') {
-      close(modalEditProfile, formProfile);
-      close(modalAddCard, formCard);
+      const openedPopup = document.querySelector('.popup_is-opened');
+      closeModal(openedPopup); 
   }
 }
 
-function open(opoenModal) {
-  opoenModal.classList.add('popup_is-opened');
+function openModal(modalElement) {
+  modalElement.classList.add('popup_is-opened');
   //Закрытие попапа нажатием на Esc
-
-  document.addEventListener('keydown', closeModalOnEscape);
+  document.addEventListener('keydown', closeByEsc);
 }
 
-function close(closeModal, resetForm) {
-  closeModal.classList.remove('popup_is-opened');
-  document.removeEventListener('keydown', closeModalOnEscape);
-
-  if (resetForm) {
-    resetForm.reset();
-  }
+function closeModal(modalElement) {
+  modalElement.classList.remove('popup_is-opened');
+  document.removeEventListener('keydown', closeByEsc);
 }
 
-export {open, close};
+export {openModal, closeModal};
