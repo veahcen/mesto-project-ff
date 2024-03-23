@@ -2,7 +2,7 @@
 const cardTemplate = document.querySelector('#card-template').content;
 
 // @todo: Функция создания карточки
-function createCard(item, deleteCard, likeCard) {
+function createCard(item, deleteCard, likeCard, openImage) {
   const cardContainer = cardTemplate.querySelector('.card').cloneNode(true);
   cardContainer.querySelector('.card__title').textContent = item.name;
   const cardImage = cardContainer.querySelector('.card__image')
@@ -15,7 +15,7 @@ function createCard(item, deleteCard, likeCard) {
   const isLike = cardContainer.querySelector('.card__like-button');
   isLike.addEventListener('click', () => likeCard(isLike));
 
-  // cardImage.addEventListener('click', () => openImage(cardImage));
+  cardImage.addEventListener('click', () => openImage(item.name, item.link));
 
   return cardContainer;
 }
@@ -30,12 +30,7 @@ function likeCard(isLike) {
   isLike.classList.toggle('card__like-button_is-active');
 }
 
-// function openImage(card) {
-//   console.log(card.src, card.alt);
-//   return [card.src, card.alt];
-//   if (evt.target.classList.contains('card__image')) {
-//     return [evt.target.src, evt.target.alt];
-//   }
-// }
+// @todo: Функция открытия карточки
+function openImage(name, link) {}
 
-export {createCard, deleteCard, likeCard};
+export {createCard, deleteCard, likeCard, openImage};

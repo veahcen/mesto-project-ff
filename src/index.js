@@ -1,6 +1,6 @@
 import './styles/index.css'; // добавьте импорт главного файла стилей
 import initialCards from './components/cards';
-import {createCard, deleteCard, likeCard} from './components/card';
+import {createCard, deleteCard, likeCard, openImage} from './components/card';
 import {openModal, closeModal} from './components/modal';
 
 
@@ -8,7 +8,7 @@ import {openModal, closeModal} from './components/modal';
 const cardsContainer = document.querySelector('.places__list');
 
 initialCards.forEach((item) => {
-  const card = createCard(item, deleteCard, likeCard);
+  const card = createCard(item, deleteCard, likeCard, openImageCard);
   cardsContainer.append(card);
 });
 
@@ -76,7 +76,7 @@ function handleFormSubmitCard(evt) {
   const placeInput = formCard.elements.placeName.value;
   const linkInput  = formCard.elements.link.value;
 
-  const card = createCard({ name: placeInput, link: linkInput }, deleteCard, likeCard);
+  const card = createCard({ name: placeInput, link: linkInput }, deleteCard, likeCard, openImageCard);
   cardsContainer.prepend(card);
 
   formCard.reset();
@@ -91,17 +91,12 @@ formCard.addEventListener('submit', handleFormSubmitCard);
 
 const cardImage = document.querySelector('.popup_type_image');
 
-const triggerOpenImage = document.querySelector('.places__list');
-
 const popupImage = cardImage.querySelector('.popup__image');
 const popupDescr = cardImage.querySelector('.popup__caption');
 
-triggerOpenImage.addEventListener('click', (evt) => {
-  //поставлено ограничение на клик по определенной области
-  if (evt.target.classList.contains('card__image')) {
-    popupImage.src = evt.target.src;
-    popupImage.alt = evt.target.alt;
-    popupDescr.textContent = evt.target.alt;
-    openModal(cardImage);
-  }
-});
+function openImageCard(name, link) {
+  popupImage.src = link;
+  popupImage.alt = name;
+  popupDescr.textContent = name;
+  openModal(cardImage);
+}
