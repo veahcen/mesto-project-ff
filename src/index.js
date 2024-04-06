@@ -1,6 +1,6 @@
 import './styles/index.css'; // добавьте импорт главного файла стилей
 import initialCards from './components/cards';
-import {createCard, deleteCard, likeCard, openImage} from './components/card';
+import {createCard, deleteCard, likeCard} from './components/card';
 import {openModal, closeModal} from './components/modal';
 
 

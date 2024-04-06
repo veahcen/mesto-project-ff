@@ -31,6 +31,6 @@ function likeCard(isLike) {
 }
 
 // @todo: Функция открытия карточки
-function openImage(name, link) {}
+//function openImage(name, link) {}
 
-export {createCard, deleteCard, likeCard, openImage};
+export {createCard, deleteCard, likeCard};
