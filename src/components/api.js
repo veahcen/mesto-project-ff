@@ -6,19 +6,18 @@ const config = {
   }
 }
 
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка ${res.status}`);
+} 
+
 async function getUser() {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((data) => {
-      return data;
-    })
+    .then((res) => checkResponse(res))
     .catch((err) => {
       return err;
     });
@@ -28,15 +27,7 @@ async function getCards() {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((data) => {
-      return data;
-    })
+    .then((res) => checkResponse(res))
     .catch((err) => {
       return err;
     });
@@ -51,15 +42,7 @@ async function postUser(title, descr) {
       about: descr
     })
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((data) => {
-      return data;
-    })
+    .then((res) => checkResponse(res))
     .catch((err) => {
       return err;
     });
@@ -74,15 +57,7 @@ async function postCard(name, link) {
       link: link
     })
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((data) => {
-      return data;
-    })
+    .then((res) => checkResponse(res))
     .catch((err) => {
       return err;
     });
@@ -93,15 +68,7 @@ async function deleteCardApi(cardId) {
     method: 'DELETE',
     headers: config.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((data) => {
-      return data;
-    })
+    .then((res) => checkResponse(res))
     .catch((err) => {
       return err;
     });
@@ -112,15 +79,7 @@ async function putLike (cardId) {
     method: 'PUT',
     headers: config.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((data) => {
-      return data;
-    })
+    .then((res) => checkResponse(res))
     .catch((err) => {
       return err;
     });
@@ -131,15 +90,7 @@ async function deleteLike (cardId) {
     method: 'DELETE',
     headers: config.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((data) => {
-      return data;
-    })
+    .then((res) => checkResponse(res))
     .catch((err) => {
       return err;
     });
@@ -153,34 +104,10 @@ async function patchUser (url) {
       avatar: url
     })
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((data) => {
-      return data;
-    })
+    .then((res) => checkResponse(res))
     .catch((err) => {
       return err;
     });
 }
-
-// async function checkImage(imageUrl) {
-//   return fetch(`${imageUrl}`, {
-//     method: 'HEAD',
-//   })
-//     .then((res) => {
-//       console.log(res);
-//       if (res.ok) {
-//         return res;
-//       }
-//       return Promise.reject(false);
-//     })
-//     .catch((err) => {
-//       return err;
-//     });
-// } не работает из-за cors
 
 export {getUser, getCards, postUser, postCard, deleteCardApi, putLike, deleteLike, patchUser};
