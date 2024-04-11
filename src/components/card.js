@@ -2,7 +2,7 @@
 const cardTemplate = document.querySelector('#card-template').content;
 
 // @todo: Функция создания карточки
-function createCard(item, deleteCard, likeCard, openImage, likes, idUser, idCard, globalUserId) {
+function createCard(item, deleteCardPopup, likeCard, openImage, likes, idUser, idCard, globalUserId) {
   const cardContainer = cardTemplate.querySelector('.card').cloneNode(true);
 
   const buttonIsMy = cardContainer.querySelector('.card__delete-button');
@@ -17,11 +17,11 @@ function createCard(item, deleteCard, likeCard, openImage, likes, idUser, idCard
   cardImage.src = item.link; 
   cardImage.alt = item.name;
 
-  
+  buttonIsMy.addEventListener('click', () => deleteCardPopup(idCard, cardContainer));
 
-  deleteCard(idCard, cardContainer);
 
-  likeCard(idCard, cardContainer);
+  const isLike = cardContainer.querySelector('.card__like-button');
+  isLike.addEventListener('click', () => likeCard(idCard, cardContainer, isLike));
 
   cardImage.addEventListener('click', () => openImage(item.name, item.link));
 

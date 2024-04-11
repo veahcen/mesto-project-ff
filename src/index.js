@@ -14,8 +14,8 @@ let globalUserId = null;
 
 Promise.all([getUser(), getCards()])
   .then(([userData, cardData]) => {
-    console.log(userData);
-    console.log(cardData);
+    // console.log(userData);
+    // console.log(cardData);
     // отрисовка данных пользователя через api
     profilTitle.textContent = userData.name; 
     profilDescr.textContent = userData.about; 
@@ -149,7 +149,7 @@ function handleFormSubmitCard(evt) {
     const placeInput = result.name;
     const linkInput  = result.link;
 
-    const card = createCard({ name: placeInput, link: linkInput }, deleteCardPopup, likeCards, openImageCard, result.likes.length, result.owner._id, result._id);
+    const card = createCard({ name: placeInput, link: linkInput }, deleteCardPopup, likeCards, openImageCard, result.likes.length, result.owner._id, result._id, globalUserId);
     cardsContainer.prepend(card);
     formCard.reset();
 
@@ -180,53 +180,45 @@ function openImageCard(name, link) {
 }
 
 const openDeleteModal = document.querySelector('.popup_card_delete');
-
-
+const deletecCadrFromBase = document.querySelector('.popup__button-delete');
 
 function deleteCardPopup(cardId, card) {
-  const triggerOpenDeleteModal = card.querySelector('.card__delete-button');
-  triggerOpenDeleteModal.addEventListener('click', () => {
-    openModal(openDeleteModal);
-    const deletecCadrFromBase = document.querySelector('.popup__button-delete');
-    deletecCadrFromBase.addEventListener('click', () => {
-      deleteCardApi(cardId)
-        .then((result) => {
-          console.log(result);
-          card.remove();
-          closeModal(openDeleteModal);
-          triggerOpenDeleteModal.removeEventListener('click');
-          deletecCadrFromBase.removeEventListener('click');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    })
-  })
+  openModal(openDeleteModal);
+  deletecCadrFromBase.addEventListener('click', () => {
+    deleteCardApi(cardId)
+      .then((result) => {
+        console.log(result);
+        card.remove();
+        closeModal(openDeleteModal);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 }
 
-function likeCards(cardId, card) {
-  const isLike = card.querySelector('.card__like-button');
-  isLike.addEventListener('click', () => {
-    if (isLike.classList.contains('card__like-button_is-active')) {
-      isLike.classList.remove('card__like-button_is-active');
-      deleteLike(cardId)
-      .then((result) => {
-          card.querySelector('.card_like-count').textContent = result.likes.length;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      isLike.classList.add('card__like-button_is-active');
-      putLike(cardId)
-      .then((result) => {
-          card.querySelector('.card_like-count').textContent = result.likes.length;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  });
+function likeCards(cardId, card, isLike) {
+  if (isLike.classList.contains('card__like-button_is-active')) {
+    isLike.classList.remove('card__like-button_is-active');
+    deleteLike(cardId)
+    .then((result) => {
+        card.querySelector('.card_like-count').textContent = result.likes.length;
+      })
+      .catch((err) => {
+        isLike.classList.remove('card__like-button_is-active');
+        console.log(err);
+      });
+  } else {
+    isLike.classList.add('card__like-button_is-active');
+    putLike(cardId)
+    .then((result) => {
+        card.querySelector('.card_like-count').textContent = result.likes.length;
+      })
+      .catch((err) => {
+        isLike.classList.add('card__like-button_is-active');
+        console.log(err);
+      });
+  }
 }
 
 //замена аватарки
