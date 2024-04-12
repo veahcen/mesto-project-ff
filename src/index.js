@@ -79,13 +79,7 @@ const cardLink = formAddCard.elements.link;
 triggerOpenModalAddCard.addEventListener('click', () => {
   cardName.value = '';
   cardLink.value = '';
-  clearValidation(modalAddCard, {
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button-disabled',
-    inputErrorClass: 'form__input_type_error',
-    errorClass: 'form__input-error_active'
-  });
+  clearValidation(modalAddCard, configValidation);
   openModal(modalAddCard);
 });
 
@@ -205,7 +199,7 @@ function likeCards(cardId, card, isLike) {
         card.querySelector('.card_like-count').textContent = result.likes.length;
       })
       .catch((err) => {
-        isLike.classList.remove('card__like-button_is-active');
+        isLike.classList.add('card__like-button_is-active');
         console.log(err);
       });
   } else {
@@ -215,7 +209,7 @@ function likeCards(cardId, card, isLike) {
         card.querySelector('.card_like-count').textContent = result.likes.length;
       })
       .catch((err) => {
-        isLike.classList.add('card__like-button_is-active');
+        isLike.classList.remove('card__like-button_is-active');
         console.log(err);
       });
   }
@@ -231,13 +225,7 @@ const avatarInput = formAvatar.elements.avatar;
 userAvatar.addEventListener('click', () => {
   openModal(modalAvatar);
   avatarInput.value = '';
-  clearValidation(modalAvatar, {
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button-disabled',
-    inputErrorClass: 'form__input_type_error',
-    errorClass: 'form__input-error_active'
-  });
+  clearValidation(modalAvatar, configValidation);
 });
 
 function handleFormSubmitAvatar(evt) {

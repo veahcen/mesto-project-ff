@@ -74,7 +74,7 @@ async function deleteCardApi(cardId) {
     });
 }
 
-async function putLike (cardId) {
+async function putLike(cardId) {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
     headers: config.headers
@@ -85,7 +85,7 @@ async function putLike (cardId) {
     });
 }
 
-async function deleteLike (cardId) {
+async function deleteLike(cardId) {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
     headers: config.headers
@@ -96,7 +96,7 @@ async function deleteLike (cardId) {
     });
 }
 
-async function patchUser (url) {
+async function patchUser(url) {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: config.headers,
