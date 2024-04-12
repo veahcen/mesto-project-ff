@@ -98,13 +98,7 @@ const descrInput  = formProfile.elements.description;
 triggerOpenModalEditProfile.addEventListener('click', () => {
   nameInput.value = profilTitle.textContent;
   descrInput.value = profilDescr.textContent;
-  clearValidation(modalEditProfile, {
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button-disabled',
-    inputErrorClass: 'form__input_type_error',
-    errorClass: 'form__input-error_active'
-  });
+  clearValidation(modalEditProfile, configValidation);
   openModal(modalEditProfile);
 });
 
